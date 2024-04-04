@@ -84,10 +84,10 @@ CREATE TABLE IF NOT EXISTS topping(
     ToppingName VARCHAR(30) NOT NULL,
     ToppingPrice DECIMAL(3,2) NOT NULL,
     ToppingCost Decimal(3,2) NOT NULL,
-    ToppingAmountS INT NOT NULL,
-    ToppingAmountM INT NOT NULL,
-    ToppingAmountL INT NOT NULL,
-    ToppingAmountXL INT NOT NULL,
+    ToppingAmountS Decimal(3,2) NOT NULL,
+    ToppingAmountM Decimal(3,2) NOT NULL,
+    ToppingAmountL Decimal(3,2) NOT NULL,
+    ToppingAmountXL Decimal(3,2) NOT NULL,
     ToppingInventoryMin INT NOT NULL,
     ToppingInventoryCur INT NOT NULL
 );
