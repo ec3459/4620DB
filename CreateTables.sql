@@ -10,10 +10,10 @@ CREATE TABLE IF NOT EXISTS customer(
 CustomerID INT PRIMARY KEY AUTO_INCREMENT,
 CustomerName VARCHAR(200) NOT NULL,
 CustomerPhone VARCHAR(200) NOT NULL,
-CustomerState VARCHAR(2) NOT NULL,
-CustomerCity VARCHAR(100) NOT NULL,
-CustomerStreet VARCHAR(100) NOT NULL,
-CustomerZipcode VARCHAR(10) NOT NULL
+CustomerState VARCHAR(2) ,
+CustomerCity VARCHAR(100) ,
+CustomerStreet VARCHAR(100) ,
+CustomerZipcode VARCHAR(10)
 );
 
 CREATE TABLE IF NOT EXISTS delivery_commission (
