@@ -25,12 +25,13 @@ SELECT * FROM ProfitByPizza;
 
 DROP VIEW ProfitByOrder;
 CREATE VIEW ProfitByOrder AS
-SELECT CommissionType AS customerType, 
-       DATE_FORMAT(commission.CommissionTime, '%m/%Y') AS "Order Month",
-       SUM(CommissionPrice) AS TotalOrderPrice, 
-       SUM(CommissionCost) AS TotalOrderCost, 
-       SUM(CommissionPrice - CommissionCost) AS Profit
+SELECT 
+    CommissionType AS customerType, 
+    DATE_FORMAT(commission.CommissionTime, '%m/%Y') AS `Order Month`,
+    SUM(CommissionPrice) AS TotalOrderPrice, 
+    SUM(CommissionCost) AS TotalOrderCost, 
+    SUM(CommissionPrice - CommissionCost) AS Profit
 FROM commission
-GROUP BY customerType, "Order Month"
+GROUP BY customerType WITH ROLLUP
 ORDER BY TotalOrderPrice ASC;
 SELECT * FROM ProfitByOrder;
