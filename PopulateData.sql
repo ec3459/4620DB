@@ -72,7 +72,7 @@ VALUES
     SET @pizza_id = LAST_INSERT_ID();
 
     -- Insert toppings for the pizza
-    INSERT INTO pizza_topping (PizzaID, ToppingID, PizzaTopingExtra) 
+    INSERT INTO pizza_topping (PizzaID, ToppingID, PizzaToppingExtra) 
     VALUES 
         (@pizza_id, (SELECT ToppingID FROM topping WHERE ToppingName = 'Regular Cheese'), 1), -- Regular Cheese (extra)
         (@pizza_id, (SELECT ToppingID FROM topping WHERE ToppingName = 'Pepperoni'), 0),       -- Pepperoni
@@ -111,7 +111,7 @@ VALUES
     SET @pan_pizza_id = LAST_INSERT_ID();
 
     -- Insert toppings for the medium pan pizza
-    INSERT INTO pizza_topping (PizzaID, ToppingID, PizzaTopingExtra) 
+    INSERT INTO pizza_topping (PizzaID, ToppingID, PizzaToppingExtra) 
     VALUES 
         (@pan_pizza_id, (SELECT ToppingID FROM topping WHERE ToppingName = 'Feta Cheese'), 0),
         (@pan_pizza_id, (SELECT ToppingID FROM topping WHERE ToppingName = 'Black Olives'), 0),
@@ -143,7 +143,7 @@ VALUES
     SET @original_pizza_id = LAST_INSERT_ID();
 
     -- Insert toppings for the small original crust pizza
-    INSERT INTO pizza_topping (PizzaID, ToppingID, PizzaTopingExtra) 
+    INSERT INTO pizza_topping (PizzaID, ToppingID, PizzaToppingExtra) 
     VALUES 
         (@original_pizza_id, (SELECT ToppingID FROM topping WHERE ToppingName = 'Regular Cheese'), 0),
         (@original_pizza_id, (SELECT ToppingID FROM topping WHERE ToppingName = 'Chicken'), 0),
@@ -191,7 +191,7 @@ VALUES
     SET @pizza_id_1 = LAST_INSERT_ID();
 
     -- Insert toppings for Pizza 1 (Regular Cheese and Pepperoni)
-    INSERT INTO pizza_topping (PizzaID, ToppingID, PizzaTopingExtra)
+    INSERT INTO pizza_topping (PizzaID, ToppingID, PizzaToppingExtra)
     VALUES 
         (@pizza_id_1, (SELECT ToppingID FROM topping WHERE ToppingName = 'Regular Cheese'), 0),
         (@pizza_id_1, (SELECT ToppingID FROM topping WHERE ToppingName = 'Pepperoni'), 0);
@@ -210,7 +210,7 @@ VALUES
     SET @pizza_id_2 = LAST_INSERT_ID();
 
     -- Insert toppings for Pizza 2 (Regular Cheese and Pepperoni)
-    INSERT INTO pizza_topping (PizzaID, ToppingID, PizzaTopingExtra)
+    INSERT INTO pizza_topping (PizzaID, ToppingID, PizzaToppingExtra)
     VALUES 
         (@pizza_id_2, (SELECT ToppingID FROM topping WHERE ToppingName = 'Regular Cheese'), 0),
         (@pizza_id_2, (SELECT ToppingID FROM topping WHERE ToppingName = 'Pepperoni'), 0);
@@ -229,7 +229,7 @@ VALUES
     SET @pizza_id_3 = LAST_INSERT_ID();
 
     -- Insert toppings for Pizza 3 (Regular Cheese and Pepperoni)
-    INSERT INTO pizza_topping (PizzaID, ToppingID, PizzaTopingExtra)
+    INSERT INTO pizza_topping (PizzaID, ToppingID, PizzaToppingExtra)
     VALUES 
         (@pizza_id_3, (SELECT ToppingID FROM topping WHERE ToppingName = 'Regular Cheese'), 0),
         (@pizza_id_3, (SELECT ToppingID FROM topping WHERE ToppingName = 'Pepperoni'), 0);
@@ -248,7 +248,7 @@ VALUES
     SET @pizza_id_4 = LAST_INSERT_ID();
 
     -- Insert toppings for Pizza 4 (Regular Cheese and Pepperoni)
-    INSERT INTO pizza_topping (PizzaID, ToppingID, PizzaTopingExtra)
+    INSERT INTO pizza_topping (PizzaID, ToppingID, PizzaToppingExtra)
     VALUES 
         (@pizza_id_4, (SELECT ToppingID FROM topping WHERE ToppingName = 'Regular Cheese'), 0),
         (@pizza_id_4, (SELECT ToppingID FROM topping WHERE ToppingName = 'Pepperoni'), 0);
@@ -267,7 +267,7 @@ VALUES
     SET @pizza_id_5 = LAST_INSERT_ID();
 
     -- Insert toppings for Pizza 5 (Regular Cheese and Pepperoni)
-    INSERT INTO pizza_topping (PizzaID, ToppingID, PizzaTopingExtra)
+    INSERT INTO pizza_topping (PizzaID, ToppingID, PizzaToppingExtra)
     VALUES 
         (@pizza_id_5, (SELECT ToppingID FROM topping WHERE ToppingName = 'Regular Cheese'), 0),
         (@pizza_id_5, (SELECT ToppingID FROM topping WHERE ToppingName = 'Pepperoni'), 0);
@@ -286,7 +286,7 @@ VALUES
     SET @pizza_id_6 = LAST_INSERT_ID();
 
     -- Insert toppings for Pizza 6 (Regular Cheese and Pepperoni)
-    INSERT INTO pizza_topping (PizzaID, ToppingID, PizzaTopingExtra)
+    INSERT INTO pizza_topping (PizzaID, ToppingID, PizzaToppingExtra)
     VALUES 
         (@pizza_id_6, (SELECT ToppingID FROM topping WHERE ToppingName = 'Regular Cheese'), 0),
         (@pizza_id_6, (SELECT ToppingID FROM topping WHERE ToppingName = 'Pepperoni'), 0);
@@ -362,19 +362,19 @@ VALUES
     -- 6. Insert the toppings for each pizza
 
     -- Pizza 1 toppings: Four Cheese Blend
-    INSERT INTO pizza_topping (PizzaID, ToppingID, PizzaTopingExtra)
+    INSERT INTO pizza_topping (PizzaID, ToppingID, PizzaToppingExtra)
     VALUES 
         (@pizza_id_1, (SELECT ToppingID FROM topping WHERE ToppingName = 'Four Cheese Blend'), 0);
 
     -- Pizza 2 toppings: Four Cheese Blend, Ham (extra), Pineapple (extra)
-    INSERT INTO pizza_topping (PizzaID, ToppingID, PizzaTopingExtra)
+    INSERT INTO pizza_topping (PizzaID, ToppingID, PizzaToppingExtra)
     VALUES 
         (@pizza_id_2, (SELECT ToppingID FROM topping WHERE ToppingName = 'Four Cheese Blend'), 0),
         (@pizza_id_2, (SELECT ToppingID FROM topping WHERE ToppingName = 'Ham'), 1),
         (@pizza_id_2, (SELECT ToppingID FROM topping WHERE ToppingName = 'Pineapple'), 1);
 
     -- Pizza 3 toppings: Four Cheese Blend, Chicken, Bacon
-    INSERT INTO pizza_topping (PizzaID, ToppingID, PizzaTopingExtra)
+    INSERT INTO pizza_topping (PizzaID, ToppingID, PizzaToppingExtra)
     VALUES 
         (@pizza_id_3, (SELECT ToppingID FROM topping WHERE ToppingName = 'Four Cheese Blend'), 0),
         (@pizza_id_3, (SELECT ToppingID FROM topping WHERE ToppingName = 'Chicken'), 0),
@@ -428,7 +428,7 @@ VALUES
     -- 5. Insert the toppings for the pizza
 
     -- Toppings: Green Pepper, Onion, Roma Tomatoes, Mushrooms, Black Olives, Goat Cheese
-    INSERT INTO pizza_topping (PizzaID, ToppingID, PizzaTopingExtra)
+    INSERT INTO pizza_topping (PizzaID, ToppingID, PizzaToppingExtra)
     VALUES 
         (@pizza_id, (SELECT ToppingID FROM topping WHERE ToppingName = 'Green Pepper'), 0),
         (@pizza_id, (SELECT ToppingID FROM topping WHERE ToppingName = 'Onion'), 0),
@@ -443,7 +443,7 @@ VALUES
     INSERT INTO commission_discount (CommissionID, DiscountID)
     VALUES (@commission_id, (SELECT DiscountID FROM discount WHERE DiscountName = 'Specialty Pizza'));
 
---Order 6
+	-- Order 6
     -- 1. Ensure Frank Turner's customer information is in the database
     INSERT INTO customer (CustomerName, CustomerPhone, CustomerState, CustomerCity, CustomerStreet, CustomerZipcode)
     VALUES ('Frank Turner', '864-232-8944', 'SC', 'Anderson', '6745 Wessex St', '29621')
@@ -481,7 +481,7 @@ VALUES
     -- 5. Insert the toppings for the pizza
 
     -- Toppings: Chicken, Green Peppers, Onions, Mushrooms, Four Cheese Blend (extra)
-    INSERT INTO pizza_topping (PizzaID, ToppingID, PizzaTopingExtra)
+    INSERT INTO pizza_topping (PizzaID, ToppingID, PizzaToppingExtra)
     VALUES 
         (@pizza_id, (SELECT ToppingID FROM topping WHERE ToppingName = 'Chicken'), 0),
         (@pizza_id, (SELECT ToppingID FROM topping WHERE ToppingName = 'Green Pepper'), 0),
@@ -541,12 +541,12 @@ VALUES
     -- 5. Insert the toppings for each pizza
 
     -- Pizza 1 toppings: Four Cheese Blend (extra)
-    INSERT INTO pizza_topping (PizzaID, ToppingID, PizzaTopingExtra)
+    INSERT INTO pizza_topping (PizzaID, ToppingID, PizzaToppingExtra)
     VALUES 
         (@pizza_id_1, (SELECT ToppingID FROM topping WHERE ToppingName = 'Four Cheese Blend'), 1);
 
     -- Pizza 2 toppings: Regular Cheese and Pepperoni (extra)
-    INSERT INTO pizza_topping (PizzaID, ToppingID, PizzaTopingExtra)
+    INSERT INTO pizza_topping (PizzaID, ToppingID, PizzaToppingExtra)
     VALUES 
         (@pizza_id_2, (SELECT ToppingID FROM topping WHERE ToppingName = 'Regular Cheese'), 0),
         (@pizza_id_2, (SELECT ToppingID FROM topping WHERE ToppingName = 'Pepperoni'), 1);

@@ -95,7 +95,7 @@ CREATE TABLE IF NOT EXISTS topping(
 CREATE TABLE IF NOT EXISTS pizza_topping(
 	PizzaID INT,
     ToppingID INT,
-    PizzaTopingExtra BOOLEAN NOT NULL,
+    PizzaToppingExtra BOOLEAN NOT NULL,
     PRIMARY KEY(PizzaID, ToppingID),
     FOREIGN KEY (PizzaID) REFERENCES pizza(PizzaID),
     FOREIGN KEY (ToppingID) REFERENCES topping(ToppingID)
