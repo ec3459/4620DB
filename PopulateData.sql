@@ -1,3 +1,4 @@
+use `Pizzeria`;
 INSERT INTO topping (ToppingName, ToppingPrice, ToppingCost, ToppingInventoryCur, ToppingInventoryMin, ToppingAmountS, ToppingAmountM, ToppingAmountL, ToppingAmountXL)
 VALUES 
 ('Pepperoni', 1.25, 0.2, 100, 50, 2, 2.75, 3.5, 4.5),
@@ -47,9 +48,12 @@ VALUES
 ('Gluten-Free', 'XLarge', 12.50, 6);
 
 -- ORDER 1
+    -- Get Disount Amount
+        SET @discount_dollar_amount = (SELECT DiscountDollarAmount FROM discount WHERE DiscountName = 'Lunch Special Large');
+
     -- Insert commission data
     INSERT INTO commission (CommissionType, CommissionTime, CommissionPrice, CommissionCost) 
-    VALUES ('Dine-in', '2024-03-05 12:03:00', 20.75, 3.68);
+    VALUES ('Dine-in', '2024-03-05 12:03:00', (20.75 - @discount_dollar_amount), 3.68);
 
     -- Retrieve the CommissionID of the newly inserted record
     SET @commission_id = LAST_INSERT_ID();
@@ -63,7 +67,7 @@ VALUES
     VALUES (
         (SELECT BasePizzaID FROM base_pizza WHERE BasePizzaSize = 'Large' AND BasePizzaCrustType = 'Thin'),
         @commission_id,
-        20.75, -- Price of the pizza
+        (20.75 - @discount_dollar_amount), -- Price of the pizza
         3.68,  -- Cost of the pizza
         'Completed'
     );
@@ -84,11 +88,14 @@ VALUES
         @pizza_id,
         (SELECT DiscountID FROM discount WHERE DiscountName = 'Lunch Special Large')
     );
-
+    -- Update price based on discount
 -- ORDER 2
+    -- Get discount amount
+    SET @lunch_special_discount_amount = (SELECT DiscountDollarAmount FROM discount WHERE DiscountName = 'Lunch Special Medium');
+    set @specialty_discount_amount = (SELECT DiscountDollarAmount FROM discount WHERE DiscountName = 'Specialty Pizza');
     -- Insert commission data
     INSERT INTO commission (CommissionType, CommissionTime, CommissionPrice, CommissionCost) 
-    VALUES ('Dine-in', '2024-04-03 12:05:00', 12.85 + 6.93, 3.23 + 1.40);
+    VALUES ('Dine-in', '2024-04-03 12:05:00', (12.85 - @lunch_special_discount_amount - @specialty_discount_amount) + 6.93, 3.23 + 1.40);
 
     -- Retrieve the CommissionID of the newly inserted record
     SET @commission_id = LAST_INSERT_ID();
@@ -102,7 +109,7 @@ VALUES
     VALUES (
         (SELECT BasePizzaID FROM base_pizza WHERE BasePizzaSize = 'Medium' AND BasePizzaCrustType = 'Pan'),
         @commission_id,
-        12.85, -- Price of the pizza
+        (12.85 - @lunch_special_discount_amount - @specialty_discount_amount), -- Price of the pizza including discounts
         3.23,  -- Cost of the pizza
         'Completed'
     );
@@ -148,13 +155,6 @@ VALUES
         (@original_pizza_id, (SELECT ToppingID FROM topping WHERE ToppingName = 'Regular Cheese'), 0),
         (@original_pizza_id, (SELECT ToppingID FROM topping WHERE ToppingName = 'Chicken'), 0),
         (@original_pizza_id, (SELECT ToppingID FROM topping WHERE ToppingName = 'Banana Peppers'), 0);
-
-    -- Insert pizza_discount for the small original crust pizza
-    INSERT INTO pizza_discount (PizzaID, DiscountID) 
-    VALUES (
-        @original_pizza_id,
-        (SELECT DiscountID FROM discount WHERE DiscountName = 'Lunch Special Medium')
-    );
 
 -- Order 3
     -- First, let's make sure Andrew Wilkes-Krier is in the customer table, or insert him if not present
@@ -292,6 +292,9 @@ VALUES
         (@pizza_id_6, (SELECT ToppingID FROM topping WHERE ToppingName = 'Pepperoni'), 0);
 
 -- Order 4
+    -- Get the initial discounts
+        SET @gameday_discount_percent = (SELECT DiscountPercentAmount FROM discount WHERE DiscountName = 'Gameday Special') / 100;
+
     -- 1. Update Andrew Wilkes-Krier's customer information if it already exists
     SET @customer_id = (SELECT CustomerID FROM customer WHERE CustomerPhone = '864-254-5861');
     UPDATE customer 
@@ -301,13 +304,9 @@ VALUES
         CustomerZipcode = '29621'
     WHERE CustomerID = @customer_id;
 
-
-    -- Retrieve Andrew Wilkes-Krier's CustomerID
-    SET @customer_id = (SELECT CustomerID FROM customer WHERE CustomerPhone = '864-254-5861');
-
     -- 2. Insert the commission record for the delivery order
     INSERT INTO commission (CommissionType, CommissionTime, CommissionPrice, CommissionCost)
-    VALUES ('Delivery', '2024-04-20 19:11:00', 27.94 + 31.50 + 26.75, 9.19 + 6.25 + 8.18);
+    VALUES ('Delivery', '2024-04-20 19:11:00', (27.94 + 31.50 + 26.75) - ((27.94 + 31.50 + 26.75) * @gameday_discount_percent) - @specialty_discount_amount, 9.19 + 6.25 + 8.18);
 
     -- Retrieve the CommissionID of the newly inserted record
     SET @commission_id = LAST_INSERT_ID();
@@ -323,7 +322,7 @@ VALUES
     VALUES (
         (SELECT BasePizzaID FROM base_pizza WHERE BasePizzaSize = 'XLarge' AND BasePizzaCrustType = 'Original'),
         @commission_id,
-        27.94, -- Price of the pizza
+        27.94  - (27.94 * @gameday_discount_percent), -- Price of the pizza with gameday discount
         9.19,  -- Cost of the pizza
         'Completed'
     );
@@ -336,7 +335,7 @@ VALUES
     VALUES (
         (SELECT BasePizzaID FROM base_pizza WHERE BasePizzaSize = 'XLarge' AND BasePizzaCrustType = 'Original'),
         @commission_id,
-        31.50, -- Price of the pizza
+        31.50 - (31.50 * @gameday_discount_percent) - @specialty_discount_amount, -- Price of the pizza
         6.25,  -- Cost of the pizza
         'Completed'
     );
@@ -349,7 +348,7 @@ VALUES
     VALUES (
         (SELECT BasePizzaID FROM base_pizza WHERE BasePizzaSize = 'XLarge' AND BasePizzaCrustType = 'Original'),
         @commission_id,
-        26.75, -- Price of the pizza
+        26.75 - (26.75 * @gameday_discount_percent), -- Price of the pizza
         8.18,  -- Cost of the pizza
         'Completed'
     );
@@ -357,14 +356,12 @@ VALUES
     -- Retrieve the PizzaID of the newly inserted record
     SET @pizza_id_3 = LAST_INSERT_ID();
 
-    -- 5. Retrieve the PizzaID of each newly inserted pizza
-
-    -- 6. Insert the toppings for each pizza
-
-    -- Pizza 1 toppings: Four Cheese Blend
+    -- Pizza 1 toppings: Four Cheese Blend, Pepperoni, Sausage
     INSERT INTO pizza_topping (PizzaID, ToppingID, PizzaToppingExtra)
     VALUES 
-        (@pizza_id_1, (SELECT ToppingID FROM topping WHERE ToppingName = 'Four Cheese Blend'), 0);
+        (@pizza_id_1, (SELECT ToppingID FROM topping WHERE ToppingName = 'Four Cheese Blend'), 0),
+        (@pizza_id_1, (SELECT ToppingID FROM topping WHERE ToppingName = 'Pepperoni'), 0),
+        (@pizza_id_1, (SELECT ToppingID FROM topping WHERE ToppingName = 'Sausage'), 0);
 
     -- Pizza 2 toppings: Four Cheese Blend, Ham (extra), Pineapple (extra)
     INSERT INTO pizza_topping (PizzaID, ToppingID, PizzaToppingExtra)
@@ -387,8 +384,8 @@ VALUES
     VALUES (@commission_id, (SELECT DiscountID FROM discount WHERE DiscountName = 'Gameday Special'));
 
     -- Specialty Pizza discount for the ham and pineapple pizza
-    INSERT INTO commission_discount (CommissionID, DiscountID)
-    VALUES (@commission_id, (SELECT DiscountID FROM discount WHERE DiscountName = 'Specialty Pizza'));
+    INSERT INTO pizza_discount (PizzaID, DiscountID)
+    VALUES (@pizza_id_2, (SELECT DiscountID FROM discount WHERE DiscountName = 'Specialty Pizza'));
 
 -- Order 5
     -- 1. Ensure Matt Engers' customer information is in the database
@@ -401,7 +398,7 @@ VALUES
 
     -- 2. Insert the commission record for the pickup order
     INSERT INTO commission (CommissionType, CommissionTime, CommissionPrice, CommissionCost)
-    VALUES ('Pickup', '2024-03-02 17:30:00', 27.45, 7.88);
+    VALUES ('Pickup', '2024-03-02 17:30:00', 27.45 - @specialty_discount_amount, 7.88);
 
     -- Retrieve the CommissionID of the newly inserted record
     SET @commission_id = LAST_INSERT_ID();
@@ -417,7 +414,7 @@ VALUES
     VALUES (
         (SELECT BasePizzaID FROM base_pizza WHERE BasePizzaSize = 'XLarge' AND BasePizzaCrustType = 'Gluten-Free'),
         @commission_id,
-        27.45, -- Price of the pizza
+        27.45 - @specialty_discount_amount, -- Price of the pizza with discount
         7.88,  -- Cost of the pizza
         'Completed'
     );
@@ -440,10 +437,10 @@ VALUES
     -- 6. Apply the appropriate discount to the order
 
     -- Specialty Pizza discount
-    INSERT INTO commission_discount (CommissionID, DiscountID)
-    VALUES (@commission_id, (SELECT DiscountID FROM discount WHERE DiscountName = 'Specialty Pizza'));
+    INSERT INTO pizza_discount (PizzaID, DiscountID)
+    VALUES (@pizza_id, (SELECT DiscountID FROM discount WHERE DiscountName = 'Specialty Pizza'));
 
-	-- Order 6
+-- Order 6
     -- 1. Ensure Frank Turner's customer information is in the database
     INSERT INTO customer (CustomerName, CustomerPhone, CustomerState, CustomerCity, CustomerStreet, CustomerZipcode)
     VALUES ('Frank Turner', '864-232-8944', 'SC', 'Anderson', '6745 Wessex St', '29621')
@@ -491,6 +488,8 @@ VALUES
 
     -- 6. No discount applied to the order
 -- Order 7
+    -- Get employee discount percentage
+        SET @employee_discount_percentage = (SELECT DiscountPercentAmount FROM discount WHERE DiscountName = 'Employee') / 100;
     -- 1. Ensure Milo Auckerman's customer information is in the database
     INSERT INTO customer (CustomerName, CustomerPhone, CustomerState, CustomerCity, CustomerStreet, CustomerZipcode)
     VALUES ('Milo Auckerman', '864-878-5679', 'SC', 'Anderson', '8879 Suburban Home', '29621')
@@ -501,7 +500,7 @@ VALUES
 
     -- 2. Insert the commission record for the delivery order
     INSERT INTO commission (CommissionType, CommissionTime, CommissionPrice, CommissionCost)
-    VALUES ('Delivery', '2024-04-13 20:32:00', 13.00 + 19.25, 2.00 + 3.25);
+    VALUES ('Delivery', '2024-04-13 20:32:00', (13.00 + 19.25) - ((13.00 + 19.25) * @employee_discount_percentage), 2.00 + 3.25);
 
     -- Retrieve the CommissionID of the newly inserted record
     SET @commission_id = LAST_INSERT_ID();
@@ -517,7 +516,7 @@ VALUES
     VALUES (
         (SELECT BasePizzaID FROM base_pizza WHERE BasePizzaSize = 'Large' AND BasePizzaCrustType = 'Thin'),
         @commission_id,
-        13.00, -- Price of the pizza
+        13.00 - (13.00 * @employee_discount_percentage), -- Price of the pizza
         2.00,  -- Cost of the pizza
         'Completed'
     );
@@ -530,7 +529,7 @@ VALUES
     VALUES (
         (SELECT BasePizzaID FROM base_pizza WHERE BasePizzaSize = 'Large' AND BasePizzaCrustType = 'Thin'),
         @commission_id,
-        19.25, -- Price of the pizza
+        19.25 - (19.25 * @employee_discount_percentage), -- Price of the pizza
         3.25,  -- Cost of the pizza
         'Completed'
     );

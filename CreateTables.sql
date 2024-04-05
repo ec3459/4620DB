@@ -1,3 +1,4 @@
+use `Pizzeria`;
 CREATE TABLE IF NOT EXISTS commission(
 CommissionID INT PRIMARY KEY AUTO_INCREMENT,
 CommissionType VARCHAR(30) NOT NULL,
