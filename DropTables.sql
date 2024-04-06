@@ -1,4 +1,6 @@
 use `Pizzeria`;
+-- Gabe Volheim
+
 DROP TABLE IF EXISTS pizza_topping;
 DROP TABLE IF EXISTS topping;
 DROP TABLE IF EXISTS pizza_discount;

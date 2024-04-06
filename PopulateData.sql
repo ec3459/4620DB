@@ -1,4 +1,6 @@
 use `Pizzeria`;
+-- Gabe Volheim and Evan Chapman
+
 INSERT INTO topping (ToppingName, ToppingPrice, ToppingCost, ToppingInventoryCur, ToppingInventoryMin, ToppingAmountS, ToppingAmountM, ToppingAmountL, ToppingAmountXL)
 VALUES 
 ('Pepperoni', 1.25, 0.2, 100, 50, 2, 2.75, 3.5, 4.5),

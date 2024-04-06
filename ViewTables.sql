@@ -1,4 +1,6 @@
 use `Pizzeria`;
+-- Gabe Volheim
+
 SELECT * FROM base_pizza;
 SELECT * FROM commission;
 SELECT * FROM commission_discount;
