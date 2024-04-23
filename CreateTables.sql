@@ -8,7 +8,8 @@ CommissionID INT PRIMARY KEY AUTO_INCREMENT,
 CommissionType VARCHAR(30) NOT NULL,
 CommissionTime DATETIME NOT NULL,
 CommissionPrice DECIMAL(7,2) NOT NULL,
-CommissionCost DECIMAL(7,2) NOT NULL
+CommissionCost DECIMAL(7,2) NOT NULL,
+CommissionStatus BOOLEAN DEFAULT true
 );
 
 CREATE TABLE IF NOT EXISTS customer(
@@ -32,6 +33,7 @@ CREATE TABLE IF NOT EXISTS delivery_commission (
 CREATE TABLE IF NOT EXISTS pickup_commission (
     CommissionID INT,
     CustomerID INT NOT NULL,
+    isPickedup BOOLEAN DEFAULT true,
     PRIMARY KEY (CommissionID),
     FOREIGN KEY (CommissionID) REFERENCES commission(CommissionID),
     FOREIGN KEY (CustomerID) REFERENCES customer(CustomerID)
@@ -76,6 +78,7 @@ CREATE TABLE IF NOT EXISTS pizza(
     FOREIGN KEY (BasePizzaID) REFERENCES base_pizza(BasePizzaID),
     FOREIGN KEY (CommissionID) REFERENCES commission(CommissionID)
 );
+
 CREATE TABLE IF NOT EXISTS pizza_discount(
 	PizzaID INT,
     DiscountID INT,
