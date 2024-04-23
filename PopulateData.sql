@@ -142,9 +142,9 @@ VALUES
 
 -- Order 3
     INSERT INTO customer (CustomerName, CustomerPhone)
-    VALUES ('Andrew Wilkes-Krier', '864-254-5861');
+    VALUES ('Andrew Wilkes-Krier', '8642545861');
 
-    SET @customer_id = (SELECT CustomerID FROM customer WHERE CustomerPhone = '864-254-5861');
+    SET @customer_id = (SELECT CustomerID FROM customer WHERE CustomerPhone = '8642545861');
 
     INSERT INTO commission (CommissionType, CommissionTime, CommissionPrice, CommissionCost)
     VALUES ('Pickup', '2024-03-03 21:30:00', 14.88 * 6, 3.30 * 6);
@@ -253,7 +253,7 @@ VALUES
 -- Order 4
         SET @gameday_discount_percent = (SELECT DiscountPercentAmount FROM discount WHERE DiscountName = 'Gameday Special') / 100;
 
-    SET @customer_id = (SELECT CustomerID FROM customer WHERE CustomerPhone = '864-254-5861');
+    SET @customer_id = (SELECT CustomerID FROM customer WHERE CustomerPhone = '8642545861');
     UPDATE customer 
     SET CustomerState = 'SC', 
         CustomerCity = 'Anderson', 
@@ -328,10 +328,10 @@ VALUES
 
 -- Order 5
     INSERT INTO customer (CustomerName, CustomerPhone)
-    VALUES ('Matt Engers', '864-474-9953')
-    ON DUPLICATE KEY UPDATE CustomerPhone = '864-474-9953';
+    VALUES ('Matt Engers', '8644749953')
+    ON DUPLICATE KEY UPDATE CustomerPhone = '8644749953';
 
-    SET @customer_id = (SELECT CustomerID FROM customer WHERE CustomerPhone = '864-474-9953');
+    SET @customer_id = (SELECT CustomerID FROM customer WHERE CustomerPhone = '8644749953');
 
     INSERT INTO commission (CommissionType, CommissionTime, CommissionPrice, CommissionCost)
     VALUES ('Pickup', '2024-03-02 17:30:00', 27.45 - @specialty_discount_amount, 7.88);
@@ -366,10 +366,10 @@ VALUES
 
 -- Order 6
     INSERT INTO customer (CustomerName, CustomerPhone, CustomerState, CustomerCity, CustomerStreet, CustomerZipcode)
-    VALUES ('Frank Turner', '864-232-8944', 'SC', 'Anderson', '6745 Wessex St', '29621')
-    ON DUPLICATE KEY UPDATE CustomerPhone = '864-232-8944';
+    VALUES ('Frank Turner', '8642328944', 'SC', 'Anderson', '6745 Wessex St', '29621')
+    ON DUPLICATE KEY UPDATE CustomerPhone = '8642328944';
 
-    SET @customer_id = (SELECT CustomerID FROM customer WHERE CustomerPhone = '864-232-8944');
+    SET @customer_id = (SELECT CustomerID FROM customer WHERE CustomerPhone = '8642328944');
 
     INSERT INTO commission (CommissionType, CommissionTime, CommissionPrice, CommissionCost)
     VALUES ('Delivery', '2024-03-02 18:17:00', 20.81, 3.19);
@@ -401,10 +401,11 @@ VALUES
 -- Order 7
         SET @employee_discount_percentage = (SELECT DiscountPercentAmount FROM discount WHERE DiscountName = 'Employee') / 100;
     INSERT INTO customer (CustomerName, CustomerPhone, CustomerState, CustomerCity, CustomerStreet, CustomerZipcode)
-    VALUES ('Milo Auckerman', '864-878-5679', 'SC', 'Anderson', '8879 Suburban Home', '29621')
-    ON DUPLICATE KEY UPDATE CustomerPhone = '864-878-5679';
+    VALUES ('Milo Auckerman', '8648785679', 'SC', 'Anderson', '8879 Suburban Home', '29621')
+    ON DUPLICATE KEY UPDATE CustomerPhone = '8648785679';
 
-    SET @customer_id = (SELECT CustomerID FROM customer WHERE CustomerPhone = '864-878-5679');
+
+    SET @customer_id = (SELECT CustomerID FROM customer WHERE CustomerPhone = '8648785679');
 
     INSERT INTO commission (CommissionType, CommissionTime, CommissionPrice, CommissionCost)
     VALUES ('Delivery', '2024-04-13 20:32:00', (13.00 + 19.25) - ((13.00 + 19.25) * @employee_discount_percentage), 2.00 + 3.25);
