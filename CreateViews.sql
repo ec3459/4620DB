@@ -24,15 +24,25 @@ GROUP BY Size, Crust
 ORDER BY Profit ASC;
 SELECT * FROM ProfitByPizza;
 
-DROP VIEW IF EXISTS ProfitByOrder;
-CREATE VIEW ProfitByOrder AS
+DROP VIEW IF EXISTS ProfitByOrderType;
+CREATE VIEW ProfitByOrderType AS
 SELECT 
-  CASE WHEN CommissionType IS NULL THEN '' ELSE CommissionType END AS `customerType`,
-  CASE WHEN CommissionType IS NULL THEN 'Grand Total' ELSE DATE_FORMAT(commission.CommissionTime, '%c/%Y') END AS `Order Month`,
+  CommissionType AS `OrderType`,
+  DATE_FORMAT(commission.CommissionTime, '%c/%Y') AS `Order Month`,
   SUM(CommissionPrice) AS TotalOrderPrice, 
   SUM(CommissionCost) AS TotalOrderCost, 
   SUM(CommissionPrice - CommissionCost) AS Profit
 FROM commission
-GROUP BY customerType WITH ROLLUP
-ORDER BY TotalOrderPrice ASC;
-SELECT * FROM ProfitByOrder;
+GROUP BY OrderType
+
+UNION ALL
+
+SELECT 
+  '' AS `OrderType`,
+  'Grand Total' AS `Order Month`,
+  SUM(CommissionPrice) AS TotalOrderPrice, 
+  SUM(CommissionCost) AS TotalOrderCost, 
+  SUM(CommissionPrice - CommissionCost) AS Profit
+FROM commission;
+
+SELECT * FROM ProfitByOrderType;
